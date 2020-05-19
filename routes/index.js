@@ -2,28 +2,41 @@ var express = require('express');
 var router = express.Router();
 const Twit = require('twit')
 const {twitterConfig} = require('../config')
+const CompanyInfo = require('../src/data/CompanyInfo')
 
 const T = new Twit(twitterConfig)
 
-function tweeted(err, data, response){
-  console.log(data)
-}
-function generateTweet(){
-  const tweet = {
-    status : "Job Alert: Engineering Manager @JoinLeague \nhttps://jobs.lever.co/league/ee4f84d4-4f8e-45c3-9b66-a850169bd206 \n #FindJobsTO"
-  }
-  T.post('statuses/update', tweet, tweeted)
+function tweeted(err, data, response) {
+    console.log(data)
 }
 
+function generateTweet(company, position, website) {
+    const companyData = JSON.parse(CompanyInfo)
+    const data = companyData.find((company) => company === companyData.name)
+    if (data) {
+        const template = `Job Alert: Senior Java Engineer ${data.twitterHandle} at ${data.name} \nhttps://jobs.lever.co/wealthsimple/55b4a81e-39d7-4cde-b1e0-2c1c654eff3e \n #FindJobsTO`
+        return template
+    } else {
+        //add error handling
+    }
+}
 
-router.get('/tweet-job', function(req, res, next) {
-  try{
-    generateTweet()
-    res.json({status: 'Tweet Succssful '})
+function tweet() {
+    const tweet = {
+        status: "Job Alert at Wealthsimple: Senior Java Engineer @Wealthsimple \nhttps://jobs.lever.co/wealthsimple/55b4a81e-39d7-4cde-b1e0-2c1c654eff3e \n #FindJobsTO"
+    }
+    T.post('statuses/update', tweet, tweeted)
+}
 
-  }catch{
-    res.json({status: 'fail'})
-  }
+
+router.get('/tweet-job', function (req, res, next) {
+    try {
+        tweet()
+        res.json({status: 'pass'})
+
+    } catch {
+        res.json({status: 'fail'})
+    }
 });
 
 
