@@ -3,5 +3,11 @@
     "name": "Wealthsimple",
     "twitterHandle": "@Wealthsimple",
     "baseUrl": "https://jobs.lever.co/wealthsimple"
+  },
+  {
+    "name": "Flipp",
+    "twitterHandle": "@getflipp",
+    "baseUrl": "https://corp.flipp.com/jobs",
+    "query": "gh_jid="
   }
 ]

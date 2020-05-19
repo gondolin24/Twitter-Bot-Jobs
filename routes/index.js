@@ -1,41 +1,34 @@
 var express = require('express');
 var router = express.Router();
-const Twit = require('twit')
-const {twitterConfig} = require('../config')
 const CompanyInfo = require('../src/data/CompanyInfo')
+const TwitterServices = require('../src/services/TwitterServices')
 
-const T = new Twit(twitterConfig)
 
-function tweeted(err, data, response) {
-    console.log(data)
-}
-
-function generateTweet(company, position, website) {
-    const companyData = JSON.parse(CompanyInfo)
-    const data = companyData.find((company) => company === companyData.name)
+function generateTweet(companyName, hashTags = []) {
+    const companyData = CompanyInfo
+    const hashTagList = hashTags.join(' ')
+    const data = companyData.find((company) => company.name === companyName)
     if (data) {
-        const template = `Job Alert: Senior Java Engineer ${data.twitterHandle} at ${data.name} \nhttps://jobs.lever.co/wealthsimple/55b4a81e-39d7-4cde-b1e0-2c1c654eff3e \n #FindJobsTO`
+        const template = `Job Alert at ${data.name}: Android Engineer ${data.twitterHandle} \nhttps://corp.flipp.com/jobs?gh_jid=2113841 \n ${hashTagList}`
         return template
     } else {
-        //add error handling
+        return null
     }
 }
 
-function tweet() {
-    const tweet = {
-        status: "Job Alert at Wealthsimple: Senior Java Engineer @Wealthsimple \nhttps://jobs.lever.co/wealthsimple/55b4a81e-39d7-4cde-b1e0-2c1c654eff3e \n #FindJobsTO"
-    }
-    T.post('statuses/update', tweet, tweeted)
-}
+router.get('/tweet-job', async function (req, res, next) {
+    const twitterService = await TwitterServices.fromConfig()
 
+    const hashTags = ['#FindJobsTO', '#Android', '#jobs', "#Engineer", '#toronto']
 
-router.get('/tweet-job', function (req, res, next) {
     try {
-        tweet()
-        res.json({status: 'pass'})
+        const tweet = generateTweet('Flipp', hashTags)
+        if (!tweet) return
+        await twitterService.postTweet(tweet)
+        res.json(tweet)
 
-    } catch {
-        res.json({status: 'fail'})
+    } catch (e) {
+        res.json(e.message)
     }
 });
 
