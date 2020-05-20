@@ -16,6 +16,21 @@ function generateTweet(companyName, hashTags = []) {
     }
 }
 
+function logme() {
+    console.log('bot-running')
+}
+
+let interval
+router.get('/run-bot', async function (req, res, next) {
+    interval = setInterval(logme, 4000)
+    res.json('bot-started')
+})
+router.get('/stop-bot', async function (req, res, next) {
+    clearInterval(interval)
+    res.json('bot stopped')
+})
+
+
 router.get('/tweet-job', async function (req, res, next) {
     const twitterService = await TwitterServices.fromConfig()
 
