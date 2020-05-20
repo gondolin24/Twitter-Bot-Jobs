@@ -9,5 +9,11 @@
     "twitterHandle": "@getflipp",
     "baseUrl": "https://corp.flipp.com/jobs",
     "query": "gh_jid="
+  },
+  {
+    "name": "Slack",
+    "twitterHandle": "@SlackHQ",
+    "baseUrl": "https://slack.com/intl/en-ca/careers/",
+    "query": ""
   }
 ]
