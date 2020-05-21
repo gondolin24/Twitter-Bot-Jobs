@@ -15,5 +15,11 @@
     "twitterHandle": "@SlackHQ",
     "baseUrl": "https://slack.com/intl/en-ca/careers/",
     "query": ""
+  },
+  {
+    "name": "Wish",
+    "twitterHandle": "@WishShopping",
+    "baseUrl": "https://jobs.lever.co/wish",
+    "query": ""
   }
 ]

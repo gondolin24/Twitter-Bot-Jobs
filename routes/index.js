@@ -16,13 +16,17 @@ function generateTweet(companyName, hashTags = [], jobUrl) {
     }
 }
 
-function logme() {
-    console.log('bot-running')
+async function runner() {
+    const succesfulTweet = await didTweet()
+    if (succesfulTweet)
+        console.log('tweeted')
+    else
+        console.log('error or duplicate')
 }
 
 let interval
 router.get('/run-bot', async function (req, res, next) {
-    interval = setInterval(logme, 4000)
+    interval = setInterval(runner, 4000)
     res.json('bot-started')
 })
 router.get('/stop-bot', async function (req, res, next) {
@@ -30,27 +34,18 @@ router.get('/stop-bot', async function (req, res, next) {
     res.json('bot stopped')
 })
 
-
-router.get('/tweet-job', async function (req, res, next) {
+async function didTweet() {
     const twitterService = await TwitterServices.fromConfig()
+    const hashTags = ['#FindJobsTO', '#API', '#jobs', "#Engineer", '#toronto', '#MongoDB', '#coding']
+    const jobUrl = 'https://jobs.lever.co/wish/4c0bef08-2efe-4023-a51d-9dd75cc93099'
+    const tweet = generateTweet('Wish', hashTags, jobUrl)
 
-    const hashTags = ['#FindJobsTO', '#IOS', '#jobs', "#Engineer", '#toronto', '#Xcode']
-    const jobUrl = 'https://slack.com/intl/en-ca/careers/2087876/software-engineer-ios'
+    const tweetInHistory = await twitterService.hasBeenTweetedBefore(jobUrl)
+    if (!tweet || tweetInHistory) return false
 
-    try {
-        const tweet = generateTweet('Slack', hashTags, jobUrl)
-
-        const tweetInHistory = await twitterService.hasBeenTweetedBefore(jobUrl)
-        if (!tweet || tweetInHistory) return res.json('tweet Exists')
-
-        if (!tweetInHistory)
-            await twitterService.postTweet(tweet)
-        res.json(tweet)
-
-    } catch (e) {
-        res.json(e.message)
-    }
-});
-
+    if (!tweetInHistory)
+        await twitterService.postTweet(tweet)
+    return true
+}
 
 module.exports = router;
