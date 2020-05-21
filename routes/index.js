@@ -4,12 +4,12 @@ const CompanyInfo = require('../src/data/CompanyInfo')
 const TwitterServices = require('../src/services/TwitterServices')
 
 
-function generateTweet(companyName, hashTags = []) {
+function generateTweet(companyName, hashTags = [], jobUrl) {
     const companyData = CompanyInfo
     const hashTagList = hashTags.join(' ')
     const data = companyData.find((company) => company.name === companyName)
     if (data) {
-        const template = `Job Alert at ${data.name}: Software Engineer, IOS ${data.twitterHandle} \n\nhttps://slack.com/intl/en-ca/careers/2087876/software-engineer-ios \n\n ${hashTagList}`
+        const template = `Job Alert at ${data.name}: Software Engineer, IOS ${data.twitterHandle} \n\n${jobUrl} \n\n ${hashTagList}`
         return template
     } else {
         return null
@@ -35,11 +35,16 @@ router.get('/tweet-job', async function (req, res, next) {
     const twitterService = await TwitterServices.fromConfig()
 
     const hashTags = ['#FindJobsTO', '#IOS', '#jobs', "#Engineer", '#toronto', '#Xcode']
+    const jobUrl = 'https://slack.com/intl/en-ca/careers/2087876/software-engineer-ios'
 
     try {
-        const tweet = generateTweet('Slack', hashTags)
-        if (!tweet) return
-        await twitterService.postTweet(tweet)
+        const tweet = generateTweet('Slack', hashTags, jobUrl)
+
+        const tweetInHistory = await twitterService.hasBeenTweetedBefore(jobUrl)
+        if (!tweet || tweetInHistory) return res.json('tweet Exists')
+
+        if (!tweetInHistory)
+            await twitterService.postTweet(tweet)
         res.json(tweet)
 
     } catch (e) {
