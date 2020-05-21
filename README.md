@@ -5,5 +5,6 @@ Quick node express app.
 Page:
 https://twitter.com/tloz_tlotr
 
-Todo: losts todo.
+Todo:
+*webscraper
 Milestones: first tweet.
