@@ -1,11 +1,22 @@
 # Twitter-Bot-Jobs
  The purpose of this bot is to post jobs around the toronto GTA area. 
- 
-Quick node express app. 
-Page:
-https://twitter.com/tloz_tlotr
+  
+ [twitter page @tloz_tlotr](https://twitter.com/tloz_tlotr)
 
-Todo:
-*webscraper
-Milestones: first tweet.
-<h2>TEST</h2>
+
+
+#Tech stack
+* node.js
+* express
+* javascript... I know
+
+Notable Libraries: 
+
+* pupetter (for web scraping) 
+ 
+###Todo list
+
+* add provider for services
+* deploy on some free cloud server ( running on local right now)
+* add custom scraping for certain site
+* I'll think more later
