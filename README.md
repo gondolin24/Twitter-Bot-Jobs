@@ -5,7 +5,7 @@
 
 
 
-#Tech stack
+# Tech stack
 * node.js
 * express
 * javascript... I know
@@ -14,7 +14,7 @@ Notable Libraries:
 
 * pupetter (for web scraping) 
  
-###Todo list
+### Todo list
 
 * add provider for services
 * deploy on some free cloud server ( running on local right now)
