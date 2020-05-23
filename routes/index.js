@@ -1,19 +1,15 @@
 var express = require('express');
 var router = express.Router();
-const CompanyInfo = require('../src/data/CompanyInfo')
 const TwitterServices = require('../src/services/TwitterServices')
 const WebScrapperService = require('../src/services/WebScrapperService')
+const CompanyService = require('../src/services/CompanyService')
+const companyService = new CompanyService()
 
-function getCompanyInfo(companyName) {
-    const companyData = CompanyInfo
-    const data = companyData.find((company) => company.name === companyName)
-    return data
-}
 
 
 function generateTweet(companyName, hashTags = [], jobUrl, title) {
     const hashTagList = hashTags.join(' ')
-    const data = getCompanyInfo(companyName)
+    const data = companyService.getCompanyInfo(companyName)
 
     if (data) {
         const template = `Job Alert at ${data.name}: ${title} ${data.twitterHandle} \n\n${jobUrl} \n\n ${hashTagList}`
@@ -24,8 +20,6 @@ function generateTweet(companyName, hashTags = [], jobUrl, title) {
 }
 
 async function runner() {
-
-
     const succesfulTweet = await didTweet()
     if (succesfulTweet)
         console.log('tweeted')
@@ -35,7 +29,9 @@ async function runner() {
 
 let interval
 router.get('/run-bot', async function (req, res, next) {
-    interval = await didTweet()
+    await runner()
+    interval = setInterval(runner, 5000000)
+
     res.json('bot-started')
 })
 router.get('/stop-bot', async function (req, res, next) {
@@ -47,10 +43,10 @@ async function didTweet() {
     const twitterService = await TwitterServices.fromConfig()
     const web = await WebScrapperService.service()
 
-    const companyName = 'Wealthsimple'
+    const companyName = 'Wish'
     const hashTags = ['#FindJobsTO', '#Software', '#jobs', "#Engineer", '#toronto', '#coding', `#${companyName}`]
 
-    const companyData = getCompanyInfo(companyName)
+    const companyData = companyService.getCompanyInfo(companyName)
     const companyOpenings = await web.getOpeningsAtCompany(companyData.baseUrl)
     for (let opening of companyOpenings) {
         const {url, jobName} = opening

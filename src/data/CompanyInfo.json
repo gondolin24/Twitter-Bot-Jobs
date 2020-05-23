@@ -19,7 +19,7 @@
   {
     "name": "Wish",
     "twitterHandle": "@WishShopping",
-    "baseUrl": "https://jobs.lever.co/wish",
+    "baseUrl": "https://jobs.lever.co/wish?location=Toronto%2C%20Canada",
     "query": ""
   }
 ]
