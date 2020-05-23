@@ -18,7 +18,7 @@ class WebScrapperService {
 
         return data.filter((posting) => {
             const {jobName = ''} = posting
-            return jobName.toLowerCase().includes('software') || jobName.toLowerCase().includes('engineer') || jobName.toLowerCase().includes('engineering') || jobName.toLowerCase().includes('developer')
+            return jobName.toLowerCase().includes('product')|| jobName.toLowerCase().includes('software') || jobName.toLowerCase().includes('engineer') || jobName.toLowerCase().includes('engineering') || jobName.toLowerCase().includes('developer')
         })
     }
 

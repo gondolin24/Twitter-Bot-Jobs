@@ -43,7 +43,7 @@ async function didTweet() {
     const twitterService = await TwitterServices.fromConfig()
     const web = await WebScrapperService.service()
 
-    const companyName = 'Wish'
+    const companyName = 'Drop'
     const hashTags = ['#FindJobsTO', '#Software', '#jobs', "#Engineer", '#toronto', '#coding', `#${companyName}`]
 
     const companyData = companyService.getCompanyInfo(companyName)

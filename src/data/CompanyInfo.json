@@ -22,4 +22,11 @@
     "baseUrl": "https://jobs.lever.co/wish?location=Toronto%2C%20Canada",
     "query": ""
   }
+,
+  {
+    "name": "Drop",
+    "twitterHandle": "@EarnWithDrop",
+    "baseUrl": "https://jobs.lever.co/joindrop?location=Toronto",
+    "query": ""
+  }
 ]
